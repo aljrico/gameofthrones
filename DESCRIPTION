@@ -1,10 +1,10 @@
-Package: harrypotter
+Package: gameofthrones
 Type: Package
-Title: Palettes Generated from All "Harry Potter" Movies
+Title: Palettes inspired in the TV show "Game of Thrones"
 Version: 2.0.0
 Authors@R: person("Alejandro", "Jimenez Rico", email = "aljrico@gmail.com", role = c("aut", "cre"))
 Maintainer: Alejandro Jimenez Rico <aljrico@gmail.com>
-Description: Implementation of the characteristic palette of the houses of Hogwarts School of magic, present in all Harry Potter movies.
+Description: Implementation of the characteristic palettes from the TV show 'Game of Thrones'.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: TRUE
@@ -13,8 +13,8 @@ Depends:
 Suggests:
     hexbin (>= 1.27.0),
     testthat
-URL: https://github.com/aljrico/harrypotter
-BugReports: https://github.com/aljrico/harrypotter/issues
+URL: https://github.com/aljrico/gameofthrones
+BugReports: https://github.com/aljrico/gameofthrones/issues
 Imports: 
     ggplot2 (>= 1.0.1),
     gridExtra,

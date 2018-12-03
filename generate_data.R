@@ -5,8 +5,9 @@ map <- tibble()
 
 # Define colours
 targaryen <- c("#000000",
-							 "#9593A2",
+							 "#4e0002",
 							 "#9D0005",
+							 "#9593A2",
 							 "#D8D8D8")
 
 targaryen2 <- c("#E1DFC4",
@@ -70,24 +71,24 @@ tyrell <- c("#4D852B",
 						"#AA9F2E",
 						"#C4B92A")
 
-
 white_walkers <- c("#263464",
 									 "#345392",
 									 "#5492D0",
 									 "#6596C9",
 									 "#51B2FF")
+
 jon_snow <- c("#132525",
 							"#113232",
 							"#747374",
 							"#95C2C1",
 							"#36AFAE")
 
-gryffindor <- c("#5C0000", "#890000", "#C50000", "#FB7E00", "#FFA700")
-hufflepuff <- c("#000000", "#372E29", "#726255", "#F0C75E", "#ECB939")
-ravenclaw <- c("#0D6585", "#089EC7", "#BA9368", "#735145", "#2B1C13")
+houses <- tibble(baratheon,greyjoy,jon_snow,lannister,martell,stark,stark2,stark3,targaryen,targaryen2,tully,tyrell,white_walkers)
+
+
 
 # Expand palette to accept contiuous scales or longer discrete scales
-complete_palette <- function(house, n = 5000){
+complete_palette <- function(house, n = 3e3){
 	complete_col <- c()
 	for(i in 1:(length(house)-1)){
 		cols <- colorRampPalette(c(house[i], house[i+1]))
@@ -96,48 +97,26 @@ complete_palette <- function(house, n = 5000){
 	return(complete_col)
 }
 
-df <- grDevices::col2rgb(complete_palette(slytherin)) %>%
-	t() %>%
-	as.data.frame() %>%
-	dplyr::rename(V1 = red) %>%
-	dplyr::rename(V2 = green) %>%
-	dplyr::rename(V3 = blue) %>%
-	dplyr::mutate(movie = "slytherin")
+# Build DF map
+make_map <- function(house_name){
+	houses[[house_name]] %>%
+		complete_palette() %>%
+		grDevices::col2rgb() %>%
+		t() %>%
+		as.data.frame() %>%
+		dplyr::rename(V1 = red) %>%
+		dplyr::rename(V2 = green) %>%
+		dplyr::rename(V3 = blue) %>%
+		dplyr::mutate(movie = house_name)
+}
 
-map <- rbind(map, df)
-
-df <- grDevices::col2rgb(complete_palette(gryffindor)) %>%
-	t() %>%
-	as.data.frame() %>%
-	dplyr::rename(V1 = red) %>%
-	dplyr::rename(V2 = green) %>%
-	dplyr::rename(V3 = blue) %>%
-	dplyr::mutate(movie = "gryffindor")
-
-map <- rbind(map, df)
-
-df <- grDevices::col2rgb(complete_palette(hufflepuff)) %>%
-	t() %>%
-	as.data.frame() %>%
-	dplyr::rename(V1 = red) %>%
-	dplyr::rename(V2 = green) %>%
-	dplyr::rename(V3 = blue) %>%
-	dplyr::mutate(movie = "hufflepuff")
-
-map <- rbind(map, df)
-
-df <- grDevices::col2rgb(complete_palette(ravenclaw)) %>%
-	t() %>%
-	as.data.frame() %>%
-	dplyr::rename(V1 = red) %>%
-	dplyr::rename(V2 = green) %>%
-	dplyr::rename(V3 = blue) %>%
-	dplyr::mutate(movie = "ravenclaw")
-
-map <- rbind(map, df)
+for(h in colnames(houses)){
+	df <- make_map(h)
+	map <- rbind(map,df)
+}
 
 
-hp.map <- map
-save(hp.map, file = "data/hp.map.rda", ascii = FALSE, compress = 'xz')
-usethis::use_data(hp.map, internal = TRUE, overwrite = TRUE)
+got.map <- map
+save(got.map, file = "data/got.map.rda", ascii = FALSE, compress = 'xz')
+usethis::use_data(got.map, internal = TRUE, overwrite = TRUE)
 
