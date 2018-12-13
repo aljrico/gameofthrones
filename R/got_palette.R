@@ -65,15 +65,9 @@
 #'
 #' ggplot(dat, aes(x = x, y = y)) +
 #'   geom_hex() + coord_fixed() +
-#'   scale_fill_gradientn(colours = got(256, house = "targaryen2"))
+#'   scale_fill_gradientn(colours = got(256, house = "targaryen")) +
+#'   theme_minimal()
 #'
-#' # using code from RColorBrewer to demo the palette
-#' n = 200
-#' image(
-#'   1:n, 1, as.matrix(1:n),
-#'   col = got(n, house = "Tyrell"),
-#'   xlab = "got n", ylab = "", xaxt = "n", yaxt = "n", bty = "n"
-#' )
 #'
 
 #' @rdname got
@@ -233,18 +227,16 @@ gameofthrones <- got
 #' library(ggplot2)
 #'
 #' # ripped from the pages of ggplot2
-#' ggplot(mtcars, aes(wt, mpg)) +
-#'   geom_point(size=4, aes(colour = factor(cyl))) +
-#'     scale_color_got(discrete=TRUE, house = "Baratheon") +
-#'     theme_bw()
+#' ggplot(iris, aes(Petal.Width, colour = Species, fill = Species)) +
+#' geom_density(alpha = 0.8) +
+#' scale_fill_got(discrete = TRUE, house = "Tully") +
+#' scale_colour_got(discrete = TRUE, house = "Tully") +
+#' theme_minimal()
 #'
-#' # ripped from the pages of ggplot2
-#' dsub <- subset(diamonds, x > 5 & x < 6 & y > 5 & y < 6)
-#' dsub$diff <- with(dsub, sqrt(abs(x-y))* sign(x-y))
-#' ggplot(dsub, aes(x, y, colour=diff)) +
-#'   geom_point() +
-#'   scale_colour_got(house = "Stark") +
-#'   theme_bw()
+#' ggplot(iris, aes(Sepal.Length, Petal.Length)) +
+#'   geom_point(size=4, aes(colour = factor(Species))) +
+#'     scale_color_got(discrete=TRUE, house = "Tyrell") +
+#'     theme_bw()
 #'
 #'
 #' # from the main got example
@@ -253,7 +245,7 @@ gameofthrones <- got
 #' ggplot(dat, aes(x = x, y = y)) +
 #'   geom_hex() +
 #'   coord_fixed() +
-#'   scale_fill_got(house = "Targaryen") +
+#'   scale_fill_got(house = "wildfire") +
 #'   theme_bw()
 #'
 #'

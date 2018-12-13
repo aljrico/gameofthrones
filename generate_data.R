@@ -1,7 +1,7 @@
 library(tidyverse)
 library(data.table)
 
-map <- tibble()
+map <- list()
 
 # Define colours
 targaryen <- c("#000000",
@@ -48,10 +48,8 @@ martell <- c("#F1B043",
 						"#B20000")
 
 tully <- c("#131142",
-					 "#5F002E",
-					 "#C1000E",
-					 "#C5C2C3",
-					 "#DADEE1")
+					 "#DADEE1",
+					 "#C1000E")
 
 greyjoy <- c("#000000",
 						 "#372E29",
@@ -65,11 +63,11 @@ baratheon <- c("#02060B",
 						 "#F0BA00",
 						 "#FEFEF9")
 
-tyrell <- c("#4D852B",
-						"#539A37",
+tyrell <- c("#36A107",
+						"#4D852B",
 						"#60AA42",
-						"#AA9F2E",
-						"#C4B92A")
+						"#C4B92A",
+						"#C4B600")
 
 white_walkers <- c("#263464",
 									 "#345392",
@@ -83,7 +81,29 @@ jon_snow <- c("#132525",
 							"#95C2C1",
 							"#36AFAE")
 
-houses <- tibble(baratheon,greyjoy,jon_snow,lannister,martell,stark,stark2,stark3,targaryen,targaryen2,tully,tyrell,white_walkers)
+wildfire <- c("#000000",
+							"#002807",
+							"#006300",
+							"#009C00",
+							"#00C800",
+							"#6EFF6E",
+							# "#A9FED0",
+							"#E6FFFF")
+
+houses <- list(baratheon = baratheon,
+							 greyjoy = greyjoy,
+							 jon_snow = jon_snow,
+							 lannister = lannister,
+							 martell = martell,
+							 stark = stark,
+							 stark2 = stark2,
+							 stark3 = stark3,
+							 targaryen = targaryen,
+							 targaryen2 = targaryen2,
+							 tully = tully,
+							 tyrell = tyrell,
+							 white_walkers = white_walkers,
+							 wildfire = wildfire)
 
 
 
@@ -107,10 +127,10 @@ make_map <- function(house_name){
 		dplyr::rename(V1 = red) %>%
 		dplyr::rename(V2 = green) %>%
 		dplyr::rename(V3 = blue) %>%
-		dplyr::mutate(movie = house_name)
+		dplyr::mutate(house = house_name)
 }
 
-for(h in colnames(houses)){
+for(h in names(houses)){
 	df <- make_map(h)
 	map <- rbind(map,df)
 }
