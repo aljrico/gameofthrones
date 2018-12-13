@@ -8,16 +8,16 @@
 \title{Game of Thrones Colour Map.}
 \usage{
 gotMap(n = 256, alpha = 1, begin = 0, end = 1, direction = 1,
-  house = "targaryen")
+  option = "targaryen")
 
 got(n, alpha = 1, begin = 0, end = 1, direction = 1,
-  house = "targaryen")
+  option = "targaryen")
 
 got_pal(alpha = 1, begin = 0, end = 1, direction = 1,
-  house = "targaryen")
+  option = "targaryen")
 
 gameofthrones(n, alpha = 1, begin = 0, end = 1, direction = 1,
-  house = "targaryen")
+  option = "targaryen")
 }
 \arguments{
 \item{n}{The number of colors (\eqn{\ge 1}) to be in the palette.}
@@ -32,8 +32,7 @@ gameofthrones(n, alpha = 1, begin = 0, end = 1, direction = 1,
 \item{direction}{Sets the order of colors in the scale. If 1, the default, colors
 are ordered from darkest to lightest. If -1, the order of colors is reversed.}
 
-\item{house}{A character string indicating the colourmap from a house to use.
-Four houses are available: "Gryffindor", "Slytherin", "Ravenclaw" and "targaryen".}
+\item{option}{A character string indicating the colourmap to use. It is not case-sensible}
 }
 \value{
 \code{got} returns a character vector, \code{cv}, of color hex
@@ -48,17 +47,17 @@ channels of \code{n} equally spaced colors along the 'Game of Thrones' colour ma
 }
 \description{
 This function creates a vector of \code{n} equally spaced colors along the
-'got colour map' created by an average calculated for all the colours present in every frame of the pictures.
+'got colour map'.
 }
 \details{
 \if{html}{Here are the color scales:
 
-  \out{<div style="text-align: center">}\figure{hogwarts_scales.png}{houses: style="width:750px;max-width:90\%;"}\out{</div>}
+  \out{<div style="text-align: center">}\figure{hogwarts-scales.png}{houses: style="width:750px;max-width:90\%;"}\out{</div>}
 
   }
 \if{latex}{Here are the color scales:
 
-  \out{\begin{center}}\figure{hogwarts_scales.png}\out{\end{center}}
+  \out{\begin{center}}\figure{hogwarts-scales.png}\out{\end{center}}
   }
 
 
@@ -73,15 +72,9 @@ dat <- data.frame(x = rnorm(10000), y = rnorm(10000))
 
 ggplot(dat, aes(x = x, y = y)) +
   geom_hex() + coord_fixed() +
-  scale_fill_gradientn(colours = got(256, house = "targaryen2"))
+  scale_fill_gradientn(colours = got(256, option = "targaryen")) +
+  theme_minimal()
 
-# using code from RColorBrewer to demo the palette
-n = 200
-image(
-  1:n, 1, as.matrix(1:n),
-  col = got(n, house = "Tyrell"),
-  xlab = "got n", ylab = "", xaxt = "n", yaxt = "n", bty = "n"
-)
 
 }
 \author{

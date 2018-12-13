@@ -9,7 +9,7 @@
   \item V1: Red value
   \item V2: Green value
   \item V3: Blue value
-  \item house: Refers to the houses of Westeros. It is intended to be a general option for choosing the specific colour palette.
+  \item option: Refers to the houses of Westeros, or other colourmaps. It is intended to be a general option for choosing the specific colour palette.
 }}
 \usage{
 got.map

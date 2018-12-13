@@ -22,13 +22,13 @@ stark <- c("#17181D",
 					 "#575964",
 					 "#9593A2")
 
-stark2 <- c("#0B1113",
-					 "#1F2D2F",
-					 "#1C262A",
-					 "#2D3A3E",
-					 "#989A9C")
+# stark2 <- c("#0B1113",
+# 					 "#1F2D2F",
+# 					 "#1C262A",
+# 					 "#2D3A3E",
+# 					 "#989A9C")
 
-stark3 <- c("#090A0C",
+stark2 <- c("#090A0C",
 						"#591D18",
 						"#938170",
 						"#CCA15B",
@@ -97,7 +97,6 @@ houses <- list(baratheon = baratheon,
 							 martell = martell,
 							 stark = stark,
 							 stark2 = stark2,
-							 stark3 = stark3,
 							 targaryen = targaryen,
 							 targaryen2 = targaryen2,
 							 tully = tully,

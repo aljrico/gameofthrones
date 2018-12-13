@@ -18,13 +18,13 @@ output:
 [![rstudio mirror per-month downloads](http://cranlogs.r-pkg.org/badges/harrypotter)](https://github.com/metacran/cranlogs.app)
 [![rstudio mirror total downloads](http://cranlogs.r-pkg.org/badges/grand-total/harrypotter?color=yellowgreen)](https://github.com/metacran/cranlogs.app)
 
-This package provides the first round of palettes derived from the *Harry Potter* film series.
+This package provides a round of palettes inspired by the *Game of Thrones* TV show.
 
-At its first version, it simply contains the palettes of the [Hogwarts](https://en.wikipedia.org/wiki/Hogwarts) Houses. They have been chosen manually, taking into account its consistency with all the existing branding of the franchise, but its suitability for data visualisation. 
+At its first version, it simply contains the palettes of some of the houses of Westeros. They have been chosen manually, taking into account its consistency with all the existing branding of the franchise, but its suitability for data visualisation. 
 
 > Most of us need to _listen_ to the music to understand how beautiful it is. But often that’s how statistics are presented: we show the notes instead of playing the music.
 
-The colour palette should be beautiful, useful for plotting data and shoulr relate to desired style; in this case, should relate to the Harry Potter world. Some of the colours might change in future versions, in order to find this balance between suitability for plotting and relatable to the Harry Potter universe.
+The colour palette should be beautiful, useful for plotting data and should relate to desired style; in this case, should relate to the _Song of Ice and Fire_ world. Some of the colours might change in future versions, in order to find this balance between suitability for plotting and relatability to the images from the universe.
 
 <center><img src="https://raw.githubusercontent.com/aljrico/aljrico.github.io/master/_posts/images/show_scales2-1.png" ></center>
 
@@ -37,7 +37,7 @@ Installation
 Just copy and execute this bunch of code and you'll have the last version of the package installed:
 
 
-```{r}
+```{r, eval = FALSE}
 devtools::install_github("aljrico/gameofthrones")
 ```
 
@@ -57,17 +57,16 @@ Let's say that you want a palette made from the house **Targaryen**.
 
 
 ```{r}
-pal <- got(250, house = "Targaryen2")
+pal <- got(250, option = "Targaryen")
 image(volcano, col = pal)
 ```
 
 <center><img src="https://raw.githubusercontent.com/aljrico/aljrico.github.io/master/_posts/images/unnamed-chunk-3-1.png" ></center>
 
-Or maybe you prefer the house **Stark**.
-
+Or that you want burn something down using *wildfire*.
 
 ```{r}
-pal <- got(250, house = "Stark")
+pal <- got(250, option = "Wildfire")
 image(volcano, col = pal)
 ```
 
@@ -78,7 +77,7 @@ Of course, this package has specific functions to behave seamlessly with the bes
 The package contains colour scale functions for **ggplot2** plots: `scale_color_got()` and `scale_fill_got()`.
 
 
-Here is a made up example using the colours from the house of **Lannister**,
+Here is a made up example using the colours from the house of **Martell**,
 
 
 ```{r}
@@ -86,7 +85,7 @@ library(ggplot2)
 ggplot(data.frame(x = rnorm(1e4), y = rnorm(1e4)), aes(x = x, y = y)) +
   geom_hex() + 
 	coord_fixed() +
-  scale_fill_got(house = "Lannister") + 
+  scale_fill_got(option = "Martell") + 
 	theme_bw()
 ```
 
@@ -94,15 +93,14 @@ and **Baratheon**
 
 
 ```{r}
-library(ggplot2)
 ggplot(data.frame(x = rnorm(1e4), y = rnorm(1e4)), aes(x = x, y = y)) +
   geom_hex() + 
 	coord_fixed() +
-  scale_fill_got(house = "Baratheon") + 
+  scale_fill_got(option = "Baratheon") + 
 	theme_bw()
 ```
 
-You can also use it to create these cloropeths of the U.S Unemployment:
+You can also use it to create this cloropeths of the U.S Unemployment:
 
 ```{r}
 unemp <- read.csv("http://datasets.flowingdata.com/unemployment09.csv",
@@ -125,9 +123,10 @@ ggplot(choropleth, aes(long, lat, group = group)) +
   coord_fixed() +
   theme_minimal() +
   ggtitle("US unemployment rate by county") +
+	labs(subtitle = "House Tully palette") +
   theme(axis.line = element_blank(), axis.text = element_blank(),
         axis.ticks = element_blank(), axis.title = element_blank()) +
-  scale_fill_got(house = "Targaryen")
+  scale_fill_got(option = "Tully")
 ```
 
 
@@ -139,18 +138,59 @@ But what if you want discrete scales? These functions also can be used for discr
 library("ggplot2")
 ggplot(mtcars, aes(factor(cyl), fill=factor(vs))) +  
 	geom_bar(colour = "black") +
-  scale_fill_got(discrete = TRUE, house = "Tyrell")
+  scale_fill_got(discrete = TRUE, option = "Tyrell")
+```
+
+Or you can do that using the shorter version: `scale_fill_got_d()` stands for `scale_fill_got(discrete = TRUE)`.
+
+```{r}
+library(gridExtra)
+
+gg1 <- ggplot(diamonds, aes(carat, fill = cut)) +
+  geom_density(position = "stack") +
+	scale_fill_got(discrete = TRUE, option = "stark2")
+
+gg2 <- ggplot(mpg, aes(class)) +
+	geom_bar(aes(fill = drv), position = position_stack(reverse = TRUE), colour = "black") +
+ coord_flip() +
+	scale_fill_got(discrete = TRUE, option = "Tully") +
+ theme(legend.position = "top") +
+	ylab("") +
+	xlab("Class")
+
+grid.arrange(gg1,gg2)
 ```
 
 
 ```{r}
-ggplot(mpg, aes(class)) +
-	geom_bar(aes(fill = drv), position = position_stack(reverse = TRUE), colour = "black") +
- coord_flip() +
-	scale_fill_got(discrete = TRUE, house = "Tully") +
- theme(legend.position = "top") +
-	ylab("") +
-	xlab("Class")
-```
 
-<center><img src="https://raw.githubusercontent.com/aljrico/aljrico.github.io/master/_posts/images/unnamed-chunk-10-1.png" ></center>
+gg <- ggplot(diamonds, aes(carat, stat(count), fill = cut)) +
+  geom_density(position = "fill") +
+	xlab("") + 
+	ylab("")
+gg1 <- gg +
+	scale_fill_got(discrete = TRUE, option = "white_walkers", name = "") +
+	ggtitle("White Walkers Palette")
+
+gg2 <- gg +
+	scale_fill_got(discrete = TRUE, option = "Lannister", name = "") +
+	ggtitle("House Lannister Palette")
+
+gg3 <-gg +
+	scale_fill_got(discrete = TRUE, option = "Tyrell", name = "") +
+	ggtitle("House Tyrell Palette")
+
+gg4 <- gg +
+	scale_fill_got(discrete = TRUE, option = "Stark", name = "") +
+	ggtitle("House Stark Palette")
+
+gg5 <- gg +
+	scale_fill_got(discrete = TRUE, option = "Tully", name = "") +
+	ggtitle("House Tully Palette")
+
+gg6 <- gg +
+	scale_fill_got(discrete = TRUE, option = "Martell", name = "") +
+	ggtitle("House Martell Palette")
+
+grid.arrange(gg1,gg2,gg3,gg4,gg5,gg6)
+```

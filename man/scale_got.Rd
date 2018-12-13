@@ -12,17 +12,17 @@
 \format{An object of class \code{ScaleDiscrete} (inherits from \code{Scale}, \code{ggproto}, \code{gg}) of length 16.}
 \usage{
 scale_color_got(..., alpha = 1, begin = 0, end = 1, direction = 1,
-  discrete = FALSE, house = "targaryen")
+  discrete = FALSE, option = "targaryen")
 
 scale_colour_got(..., alpha = 1, begin = 0, end = 1, direction = 1,
-  discrete = FALSE, house = "targaryen")
+  discrete = FALSE, option = "targaryen")
 
 scale_colour_got_d
 
 scale_color_got_d
 
 scale_fill_got(..., alpha = 1, begin = 0, end = 1, direction = 1,
-  discrete = FALSE, house = "targaryen")
+  discrete = FALSE, option = "targaryen")
 
 scale_fill_got_d
 }
@@ -40,7 +40,7 @@ are as output by \code{got_pal}. If -1, the order of colors is reversed.}
 
 \item{discrete}{generate a discrete palette? (default: \code{FALSE} - generate continuous palette)}
 
-\item{house}{A character string indicating the colourmap from a house to use.}
+\item{option}{A character string indicating the colourmap to use.}
 }
 \description{
 Uses the Game of Thrones color scale.
@@ -55,28 +55,31 @@ number of colors.
 library(ggplot2)
 
 # ripped from the pages of ggplot2
-ggplot(mtcars, aes(wt, mpg)) +
-  geom_point(size=4, aes(colour = factor(cyl))) +
-    scale_color_got(discrete=TRUE, house = "Baratheon") +
-    theme_bw()
+ggplot(iris, aes(Petal.Width, colour = Species, fill = Species)) +
+geom_density(alpha = 0.8) +
+scale_fill_got(discrete = TRUE, option = "Tully") +
+scale_colour_got(discrete = TRUE, option = "Tully") +
+theme_minimal()
 
-# ripped from the pages of ggplot2
-dsub <- subset(diamonds, x > 5 & x < 6 & y > 5 & y < 6)
-dsub$diff <- with(dsub, sqrt(abs(x-y))* sign(x-y))
-ggplot(dsub, aes(x, y, colour=diff)) +
-  geom_point() +
-  scale_colour_got(house = "Stark") +
-  theme_bw()
+ggplot(iris, aes(Sepal.Length, Petal.Length)) +
+  geom_point(size=4, aes(colour = factor(Species))) +
+    scale_color_got(discrete=TRUE, option = "Tyrell") +
+    theme_bw()
 
 
 # from the main got example
-dat <- data.frame(x = rnorm(10000), y = rnorm(10000))
+dat <- data.frame(x = rnorm(1e4), y = rnorm(1e4))
 
 ggplot(dat, aes(x = x, y = y)) +
   geom_hex() +
   coord_fixed() +
-  scale_fill_got(house = "Targaryen") +
+  scale_fill_got(option = "wildfire") +
   theme_bw()
+
+ggplot(diamonds, aes(carat, stat(count), fill = cut)) +
+geom_density(position = "fill") +
+scale_fill_got(discrete = TRUE, option = "Lannister")
+
 
 
 }

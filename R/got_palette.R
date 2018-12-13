@@ -8,7 +8,7 @@
 #'   \item V1: Red value
 #'   \item V2: Green value
 #'   \item V3: Blue value
-#'   \item house: Refers to the houses of Westeros. It is intended to be a general option for choosing the specific colour palette.
+#'   \item option: Refers to the houses of Westeros, or other colourmaps. It is intended to be a general option for choosing the specific colour palette.
 #'}
 "got.map"
 
@@ -32,7 +32,7 @@
 #' @param direction Sets the order of colors in the scale. If 1, the default, colors
 #' are ordered from darkest to lightest. If -1, the order of colors is reversed.
 #'
-#' @param house A character string indicating the colourmap from a house to use. It is not case-sensible
+#' @param option A character string indicating the colourmap to use. It is not case-sensible
 #'
 #' @return \code{got} returns a character vector, \code{cv}, of color hex
 #' codes. This can be used either to create a user-defined color palette for
@@ -45,12 +45,12 @@
 #'
 #' \if{html}{Here are the color scales:
 #'
-#'   \out{<div style="text-align: center">}\figure{hogwarts_scales.png}{houses: style="width:750px;max-width:90\%;"}\out{</div>}
+#'   \out{<div style="text-align: center">}\figure{hogwarts-scales.png}{houses: style="width:750px;max-width:90\%;"}\out{</div>}
 #'
 #'   }
 #' \if{latex}{Here are the color scales:
 #'
-#'   \out{\begin{center}}\figure{hogwarts_scales.png}\out{\end{center}}
+#'   \out{\begin{center}}\figure{hogwarts-scales.png}\out{\end{center}}
 #'   }
 #'
 #'
@@ -65,7 +65,7 @@
 #'
 #' ggplot(dat, aes(x = x, y = y)) +
 #'   geom_hex() + coord_fixed() +
-#'   scale_fill_gradientn(colours = got(256, house = "targaryen")) +
+#'   scale_fill_gradientn(colours = got(256, option = "targaryen")) +
 #'   theme_minimal()
 #'
 #'
@@ -77,9 +77,9 @@
 #' channels of \code{n} equally spaced colors along the 'Game of Thrones' colour map.
 #' \code{n = 256} by default.
 #'
-gotMap <- function(n = 256, alpha = 1, begin = 0, end = 1, direction = 1, house = "targaryen") {
+gotMap <- function(n = 256, alpha = 1, begin = 0, end = 1, direction = 1, option = "targaryen") {
 
-	house <- tolower(house)
+	option <- tolower(option)
 
 	if (begin < 0 | begin > 1 | end < 0 | end > 1) {
 		stop("begin and end must be in [0,1]")
@@ -95,9 +95,9 @@ gotMap <- function(n = 256, alpha = 1, begin = 0, end = 1, direction = 1, house 
 		end <- tmp
 	}
 
-	colnames(got.map) <- c("R", "G", "B", "house")
+	colnames(got.map) <- c("R", "G", "B", "option")
 
-	map <- got.map[got.map$house == house, ]
+	map <- got.map[got.map$option == option, ]
 
 	map_cols <- grDevices::rgb(map$R, map$G, map$B, maxColorValue = 255)
 	fn_cols <- grDevices::colorRamp(map_cols, space = "Lab", interpolate = "spline")
@@ -108,9 +108,9 @@ gotMap <- function(n = 256, alpha = 1, begin = 0, end = 1, direction = 1, house 
 #' @rdname got
 #' @export
 #'
-got <- function(n, alpha = 1, begin = 0, end = 1, direction = 1, house = "targaryen") {
+got <- function(n, alpha = 1, begin = 0, end = 1, direction = 1, option = "targaryen") {
 
-	house <- tolower(house)
+	option <- tolower(option)
 
 	if (begin < 0 | begin > 1 | end < 0 | end > 1) {
 		stop("begin and end must be in [0,1]")
@@ -126,9 +126,9 @@ got <- function(n, alpha = 1, begin = 0, end = 1, direction = 1, house = "targar
 		end <- tmp
 	}
 
-	colnames(got.map) <- c("R", "G", "B", "house")
+	colnames(got.map) <- c("R", "G", "B", "option")
 
-	map <- got.map[got.map$house == house, ]
+	map <- got.map[got.map$option == option, ]
 
 	map_cols <- grDevices::rgb(map$R, map$G, map$B, maxColorValue = 255)
 	fn_cols <- grDevices::colorRamp(map_cols, space = "Lab", interpolate = "spline")
@@ -141,12 +141,12 @@ got <- function(n, alpha = 1, begin = 0, end = 1, direction = 1, house = "targar
 #' @rdname got
 #'
 #' @export
-got_pal <- function(alpha = 1, begin = 0, end = 1, direction = 1, house = "targaryen") {
+got_pal <- function(alpha = 1, begin = 0, end = 1, direction = 1, option = "targaryen") {
 
-	house <- tolower(house)
+	option <- tolower(option)
 
 	function(n) {
-		got(n, alpha, begin, end, direction, house)
+		got(n, alpha, begin, end, direction, option)
 	}
 }
 
@@ -157,14 +157,14 @@ got_pal <- function(alpha = 1, begin = 0, end = 1, direction = 1, house = "targa
 #'
 #' @export
 scale_color_got <- function(..., alpha = 1, begin = 0, end = 1, direction = 1,
-																discrete = FALSE, house = "targaryen") {
+																discrete = FALSE, option = "targaryen") {
 
-	house <- tolower(house)
+	option <- tolower(option)
 
 	if (discrete) {
-		discrete_scale("colour", "got", got_pal(alpha, begin, end, direction, house), ...)
+		discrete_scale("colour", "got", got_pal(alpha, begin, end, direction, option), ...)
 	} else {
-		scale_color_gradientn(colours = got(256, alpha, begin, end, direction, house), ...)
+		scale_color_gradientn(colours = got(256, alpha, begin, end, direction, option), ...)
 	}
 }
 
@@ -212,7 +212,7 @@ gameofthrones <- got
 #'
 #' @param discrete generate a discrete palette? (default: \code{FALSE} - generate continuous palette)
 #'
-#' @param house A character string indicating the colourmap from a house to use.
+#' @param option A character string indicating the colourmap to use.
 #'
 #'
 #' @rdname scale_got
@@ -229,36 +229,41 @@ gameofthrones <- got
 #' # ripped from the pages of ggplot2
 #' ggplot(iris, aes(Petal.Width, colour = Species, fill = Species)) +
 #' geom_density(alpha = 0.8) +
-#' scale_fill_got(discrete = TRUE, house = "Tully") +
-#' scale_colour_got(discrete = TRUE, house = "Tully") +
+#' scale_fill_got(discrete = TRUE, option = "Tully") +
+#' scale_colour_got(discrete = TRUE, option = "Tully") +
 #' theme_minimal()
 #'
 #' ggplot(iris, aes(Sepal.Length, Petal.Length)) +
 #'   geom_point(size=4, aes(colour = factor(Species))) +
-#'     scale_color_got(discrete=TRUE, house = "Tyrell") +
+#'     scale_color_got(discrete=TRUE, option = "Tyrell") +
 #'     theme_bw()
 #'
 #'
 #' # from the main got example
-#' dat <- data.frame(x = rnorm(10000), y = rnorm(10000))
+#' dat <- data.frame(x = rnorm(1e4), y = rnorm(1e4))
 #'
 #' ggplot(dat, aes(x = x, y = y)) +
 #'   geom_hex() +
 #'   coord_fixed() +
-#'   scale_fill_got(house = "wildfire") +
+#'   scale_fill_got(option = "wildfire") +
 #'   theme_bw()
+#'
+#' ggplot(diamonds, aes(carat, stat(count), fill = cut)) +
+#' geom_density(position = "fill") +
+#' scale_fill_got(discrete = TRUE, option = "Lannister")
+#'
 #'
 #'
 #' @export
 scale_fill_got <- function(..., alpha = 1, begin = 0, end = 1, direction = 1,
-															 discrete = FALSE, house = "targaryen") {
+															 discrete = FALSE, option = "targaryen") {
 
-	house <- tolower(house)
+	option <- tolower(option)
 
 	if (discrete) {
-		discrete_scale("fill", "got", got_pal(alpha, begin, end, direction, house), ...)
+		discrete_scale("fill", "got", got_pal(alpha, begin, end, direction, option), ...)
 	} else {
-		scale_fill_gradientn(colours = got(256, alpha, begin, end, direction, house), ...)
+		scale_fill_gradientn(colours = got(256, alpha, begin, end, direction, option), ...)
 	}
 }
 
