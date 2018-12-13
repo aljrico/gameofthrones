@@ -150,5 +150,5 @@ gg2 <- ggplot(mpg, aes(class)) +
 grid.arrange(gg1,gg2)
 ```
 
-<center><img src="https://raw.githubusercontent.com/aljrico/gameofthrones/master/readme_raw_files/figure-markdown_github/unnamed-chunk-9-1.png" ></center>
+<center><img src="https://raw.githubusercontent.com/aljrico/gameofthrones/master/readme_raw_files/figure-markdown_github/unnamed-chunk-10-1.png" ></center>
 
