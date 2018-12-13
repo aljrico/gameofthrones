@@ -81,6 +81,24 @@ jon_snow <- c("#132525",
 							"#95C2C1",
 							"#36AFAE")
 
+margaery <- c("#82B5C4",
+							"#A9BC7E",
+							"#D7C42A",
+							"#CDA25C",
+							"#C37E90")
+
+daenerys <- c("#792427",
+							"#545058",
+							"#2B818E",
+							"#80A098",
+							"#D1BDA2")
+
+game_of_thrones <- c("#9A1408",
+							"#B32B1B",
+							"#966628",
+							"#AAA549",
+							"#B4AF6D")
+
 wildfire <- c("#000000",
 							"#002807",
 							"#006300",
@@ -102,7 +120,10 @@ houses <- list(baratheon = baratheon,
 							 tully = tully,
 							 tyrell = tyrell,
 							 white_walkers = white_walkers,
-							 wildfire = wildfire)
+							 wildfire = wildfire,
+							 margaery = margaery,
+							 daenerys = daenerys,
+							 game_of_thrones = game_of_thrones)
 
 
 

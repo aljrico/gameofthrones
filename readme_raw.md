@@ -1,17 +1,6 @@
 -   [Installation](#installation)
 -   [Usage](#usage)
 
-<center>
-<img src="https://raw.githubusercontent.com/aljrico/aljrico.github.io/master/_posts/images/hogwarts-houses.png">
-</center>
-
-[![cran
-version](http://www.r-pkg.org/badges/version/harrypotter)](https://cran.r-project.org/package=harrypotter)
-[![rstudio mirror per-month
-downloads](http://cranlogs.r-pkg.org/badges/harrypotter)](https://github.com/metacran/cranlogs.app)
-[![rstudio mirror total
-downloads](http://cranlogs.r-pkg.org/badges/grand-total/harrypotter?color=yellowgreen)](https://github.com/metacran/cranlogs.app)
-
 This package provides a round of palettes inspired by the *Game of
 Thrones* TV show.
 
@@ -20,9 +9,8 @@ houses of Westeros. They have been chosen manually, taking into account
 its consistency with all the existing branding of the franchise, but its
 suitability for data visualisation.
 
-> Most of us need to *listen* to the music to understand how beautiful
-> it is. But often that’s how statistics are presented: we show the
-> notes instead of playing the music.
+> Information visualization is just a language with everything to be
+> discovered.
 
 The colour palette should be beautiful, useful for plotting data and
 should relate to desired style; in this case, should relate to the *Song
@@ -159,28 +147,10803 @@ when TRUE, sets a finite number of sufficiently spaced colours within
 the selected palette to plot your data.
 
 ``` r
-library("ggplot2")
-ggplot(mtcars, aes(factor(cyl), fill=factor(vs))) +  
+library(gridExtra)
+
+gg1 <- ggplot(diamonds, aes(factor(color), fill=factor(cut))) +  
     geom_bar(colour = "black") +
-  scale_fill_got(discrete = TRUE, option = "Tyrell")
+  scale_fill_got(discrete = TRUE, option = "Margaery") +
+    ggtitle("Lady Margaery") +
+    theme_minimal()
+
+gg2 <- ggplot(diamonds, aes(factor(color), fill=factor(cut))) +  
+    geom_bar(colour = "black") +
+  scale_fill_got(discrete = TRUE, option = "Daenerys", direction = - 1) +
+    ggtitle("Daenerys Stormborn") +
+    theme_minimal()
+
+grid.arrange(gg1,gg2)
 ```
 
 ![](readme_raw_files/figure-markdown_github/unnamed-chunk-8-1.png)
 
-Or you can do that using the shorter version: `scale_fill_got_d()`
-stands for `scale_fill_got(discrete = TRUE)`.
+Note that you can also play with the direction of the colour map. Either
+the default `direction = 1` or the opposite `direction = -1`.
 
 ``` r
-library(gridExtra)
+library(geojsonio)
+```
 
+    ## 
+    ## Attaching package: 'geojsonio'
+
+    ## The following object is masked from 'package:base':
+    ## 
+    ##     pretty
+
+``` r
+library(tidyverse)
+```
+
+    ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.2.1 ──
+
+    ## ✔ tibble  1.4.2     ✔ purrr   0.2.5
+    ## ✔ tidyr   0.8.1     ✔ dplyr   0.7.7
+    ## ✔ readr   1.1.1     ✔ stringr 1.3.1
+    ## ✔ tibble  1.4.2     ✔ forcats 0.3.0
+
+    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ✖ dplyr::combine() masks gridExtra::combine()
+    ## ✖ dplyr::filter()  masks stats::filter()
+    ## ✖ dplyr::lag()     masks stats::lag()
+    ## ✖ purrr::map()     masks maps::map()
+
+``` r
+spdf <- geojson_read("https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/communes.geojson",  what = "sp")
+
+# Since it is a bit to much data, I select only a subset of it:
+spdf = spdf[ substr(spdf@data$code,1,2)  %in% c("06", "83", "13", "30", "34", "11", "66") , ]
+
+# I need to fortify the data AND keep trace of the commune code! (Takes 2 minutes)
+library(broom)
+spdf_fortified <- tidy(spdf, region = "code")
+```
+
+    ## Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+``` r
+# read data
+data=read.table("https://www.r-graph-gallery.com/wp-content/uploads/2017/12/data_on_french_states.csv", header=T, sep=";")
+head(data)
+```
+
+    ##   reg dep depcom     dciris   an typequ nb_equip
+    ## 1  84  01  01001      01001 2016   A504        1
+    ## 2  84  01  01004 01004_0101 2016   A504        7
+    ## 3  84  01  01004 01004_0102 2016   A504       15
+    ## 4  84  01  01004 01004_0201 2016   A504       11
+    ## 5  84  01  01004 01004_0202 2016   A504        3
+    ## 6  84  01  01005      01005 2016   A504        4
+
+``` r
+# Make the merge
+spdf_fortified = spdf_fortified %>%
+    left_join(. , data, by=c("id"="depcom"))
+```
+
+    ## Warning: Column `id`/`depcom` joining character vector and factor, coercing
+    ## into character vector
+
+``` r
+# Note that if the number of restaurant is NA, it is in fact 0
+spdf_fortified$nb_equip[ is.na(spdf_fortified$nb_equip)] = 0.001
+
+p1 <- ggplot() +
+    geom_polygon(data = spdf_fortified, aes(fill = nb_equip, x = long, y = lat, group = group) , size=0, alpha=0.9) +
+    theme_void() +
+    scale_fill_got(option = "Wildfire", trans = "log", breaks=c(1,5,10,20,50,100), name="Number of restaurant", guide = guide_legend( keyheight = unit(3, units = "mm"), keywidth=unit(12, units = "mm"), label.position = "bottom", title.position = 'top', nrow=1) ) +
+    theme(legend.position = "none") + 
+    coord_map()
+
+p2 <- ggplot() +
+    geom_polygon(data = spdf_fortified, aes(fill = nb_equip, x = long, y = lat, group = group) , size=0, alpha=0.9) +
+    theme_void() +
+    scale_fill_got(option = "Wildfire", direction = -1, trans = "log", breaks=c(1,5,10,20,50,100), name="Number of restaurant", guide = guide_legend( keyheight = unit(3, units = "mm"), keywidth=unit(12, units = "mm"), label.position = "bottom", title.position = 'top', nrow=1) ) +
+    theme(legend.position = "none") +
+    coord_map()
+
+grid.arrange(p1,p2, ncol = 2)
+```
+
+![](readme_raw_files/figure-markdown_github/unnamed-chunk-9-1.png)
+
+``` r
 gg1 <- ggplot(diamonds, aes(carat, fill = cut)) +
   geom_density(position = "stack") +
-    scale_fill_got(discrete = TRUE, option = "stark2")
+    scale_fill_got(discrete = TRUE, option = "Stark2")
 
 gg2 <- ggplot(mpg, aes(class)) +
     geom_bar(aes(fill = drv), position = position_stack(reverse = TRUE), colour = "black") +
  coord_flip() +
-    scale_fill_got(discrete = TRUE, option = "Tully") +
+    scale_fill_got(discrete = TRUE, option = "Daenerys") +
  theme(legend.position = "top") +
     ylab("") +
     xlab("Class")
@@ -188,7 +10951,7 @@ gg2 <- ggplot(mpg, aes(class)) +
 grid.arrange(gg1,gg2)
 ```
 
-![](readme_raw_files/figure-markdown_github/unnamed-chunk-9-1.png)
+![](readme_raw_files/figure-markdown_github/unnamed-chunk-10-1.png)
 
 ``` r
 gg <- ggplot(diamonds, aes(carat, stat(count), fill = cut)) +
@@ -222,4 +10985,4 @@ gg6 <- gg +
 grid.arrange(gg1,gg2,gg3,gg4,gg5,gg6)
 ```
 
-![](readme_raw_files/figure-markdown_github/unnamed-chunk-10-1.png)
+![](readme_raw_files/figure-markdown_github/unnamed-chunk-11-1.png)

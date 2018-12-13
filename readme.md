@@ -2,39 +2,41 @@
 <center><img src="https://raw.githubusercontent.com/aljrico/aljrico.github.io/master/_posts/images/hogwarts-houses.png"></center>
 
 
-[![cran version](http://www.r-pkg.org/badges/version/harrypotter)](https://cran.r-project.org/package=harrypotter)
-[![rstudio mirror per-month downloads](http://cranlogs.r-pkg.org/badges/harrypotter)](https://github.com/metacran/cranlogs.app)
-[![rstudio mirror total downloads](http://cranlogs.r-pkg.org/badges/grand-total/harrypotter?color=yellowgreen)](https://github.com/metacran/cranlogs.app)
+This package provides a round of palettes inspired by the *Game of
+Thrones* TV show.
 
-This package provides the first round of palettes derived from the *Harry Potter* film series.
+At its first version, it simply contains the palettes of some of the
+houses of Westeros. They have been chosen manually, taking into account
+its consistency with all the existing branding of the franchise, but its
+suitability for data visualisation.
 
-At its first version, it simply contains the palettes of the [Hogwarts](https://en.wikipedia.org/wiki/Hogwarts) Houses. They have been chosen manually, taking into account its consistency with all the existing branding of the franchise, but its suitability for data visualisation. 
+> Information visualization is just a language with everything to be
+> discovered.
 
-> Most of us need to _listen_ to the music to understand how beautiful it is. But often that’s how statistics are presented: we show the notes instead of playing the music.
+A colour palette should not only be beautiful, but suitable for portraying and highlighting data. The colours of this palette has been chose trying to to find this balance between suitability for plotting
+and relatability to the world of *A Song of Ice and Fire*.
 
-The colour palette should be beautiful, useful for plotting data and shoulr relate to desired style; in this case, should relate to the Harry Potter world. Some of the colours might change in future versions, in order to find this balance between suitability for plotting and relatable to the Harry Potter universe.
 
 <center><img src="https://raw.githubusercontent.com/aljrico/aljrico.github.io/master/_posts/images/show_scales2-1.png" ></center>
 
 
 
-
 Installation
--------------
+------------
 
-Just copy and execute this bunch of code and you'll have the last version of the package installed:
+Just copy and execute this bunch of code and you’ll have the last
+version of the package installed:
 
-
-```r
-install.packages("harrypotter")
+``` r
+devtools::install_github("aljrico/gameofthrones")
 ```
 
 And you can now use it:
 
-
-```r
-library(harrypotter)
+``` r
+library(gameofthrones)
 ```
+
 
 Usage
 -----
