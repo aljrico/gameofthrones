@@ -34,7 +34,7 @@ And you can now use it:
 library(gameofthrones)
 ```
 
-<center><img src="https://raw.githubusercontent.com/aljrico/gameofthrones/master/readme_raw_files/figure-markdown_github/unnamed-chunk-11	-1.png" ></center>
+<center><img src="https://raw.githubusercontent.com/aljrico/gameofthrones/master/readme_raw_files/figure-markdown_github/unnamed-chunk-11-1.png" ></center>
 
 
 Usage
@@ -80,7 +80,7 @@ ggplot(data.frame(x = rnorm(1e4), y = rnorm(1e4)), aes(x = x, y = y)) +
   scale_fill_got(option = "Martell") + 
     theme_bw()
 ```
-<center><img src="https://raw.githubusercontent.com/aljrico/gameofthrones/master/readme_raw_files/figure-markdown_github/unnamed-chunk-5	-1.png" ></center>
+<center><img src="https://raw.githubusercontent.com/aljrico/gameofthrones/master/readme_raw_files/figure-markdown_github/unnamed-chunk-5-1.png" ></center>
 
 and **Baratheon**
 
@@ -92,12 +92,12 @@ ggplot(data.frame(x = rnorm(1e4), y = rnorm(1e4)), aes(x = x, y = y)) +
     theme_bw()
 ```
 
-<center><img src="https://raw.githubusercontent.com/aljrico/gameofthrones/master/readme_raw_files/figure-markdown_github/unnamed-chunk-6	-1.png" ></center>
+<center><img src="https://raw.githubusercontent.com/aljrico/gameofthrones/master/readme_raw_files/figure-markdown_github/unnamed-chunk-6-1.png" ></center>
 
 
 You can also use it to create this cloropeth of the U.S Unemployment:
 
-<center><img src="https://raw.githubusercontent.com/aljrico/gameofthrones/master/readme_raw_files/figure-markdown_github/unnamed-chunk-7	-1.png" ></center>
+<center><img src="https://raw.githubusercontent.com/aljrico/gameofthrones/master/readme_raw_files/figure-markdown_github/unnamed-chunk-7-1.png" ></center>
 
 But what if you want discrete scales? These functions also can be used
 for discrete scales with the argument `discrete = TRUE`. This argument,
@@ -122,15 +122,14 @@ gg2 <- ggplot(diamonds, aes(factor(color), fill=factor(cut))) +
 grid.arrange(gg1,gg2)
 ```
 
-<center><img src="https://raw.githubusercontent.com/aljrico/gameofthrones/master/readme_raw_files/figure-markdown_github/unnamed-chunk-8	-1.png" ></center>
+<center><img src="https://raw.githubusercontent.com/aljrico/gameofthrones/master/readme_raw_files/figure-markdown_github/unnamed-chunk-8-1.png" ></center>
 
 Note that you can also play with the direction of the colour map. Either
 the default `direction = 1` or the opposite `direction = -1`.
 
 See how diferently you can highlight the density distribution of restaurans in southern France.
 
-<center><img src="https://raw.githubusercontent.com/aljrico/gameofthrones/master/readme_raw_files/figure-markdown_github/unnamed-chunk-9	-1.png" ></center>
-
+<center><img src="https://raw.githubusercontent.com/aljrico/gameofthrones/master/readme_raw_files/figure-markdown_github/unnamed-chunk-9-1.png" ></center>
 
 
 
