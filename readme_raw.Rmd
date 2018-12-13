@@ -11,18 +11,11 @@ output:
 ---
 
 
-<center><img src="https://raw.githubusercontent.com/aljrico/aljrico.github.io/master/_posts/images/hogwarts-houses.png"></center>
-
-
-[![cran version](http://www.r-pkg.org/badges/version/harrypotter)](https://cran.r-project.org/package=harrypotter)
-[![rstudio mirror per-month downloads](http://cranlogs.r-pkg.org/badges/harrypotter)](https://github.com/metacran/cranlogs.app)
-[![rstudio mirror total downloads](http://cranlogs.r-pkg.org/badges/grand-total/harrypotter?color=yellowgreen)](https://github.com/metacran/cranlogs.app)
-
 This package provides a round of palettes inspired by the *Game of Thrones* TV show.
 
 At its first version, it simply contains the palettes of some of the houses of Westeros. They have been chosen manually, taking into account its consistency with all the existing branding of the franchise, but its suitability for data visualisation. 
 
-> Most of us need to _listen_ to the music to understand how beautiful it is. But often that’s how statistics are presented: we show the notes instead of playing the music.
+> Information visualization is just a language with everything to be discovered. 
 
 The colour palette should be beautiful, useful for plotting data and should relate to desired style; in this case, should relate to the _Song of Ice and Fire_ world. Some of the colours might change in future versions, in order to find this balance between suitability for plotting and relatability to the images from the universe.
 
