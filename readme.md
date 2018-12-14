@@ -102,7 +102,7 @@ You can also use it to create this cloropeth of the U.S Unemployment:
 But what if you want discrete scales? These functions also can be used
 for discrete scales with the argument `discrete = TRUE`. This argument,
 when TRUE, sets a finite number of sufficiently spaced colours within
-the selected palette to plot your data.
+the selected palette to plot your data. You can also bypass it by calling the function with a `_d()` at the end. So `scale_fill_got(discrete = TRUE)` becomes `scale_fill_got_d()`. Much easier, isn't it?
 
 ``` r
 library(gridExtra)
@@ -115,7 +115,7 @@ gg1 <- ggplot(diamonds, aes(factor(color), fill=factor(cut))) +
 
 gg2 <- ggplot(diamonds, aes(factor(color), fill=factor(cut))) +  
     geom_bar(colour = "black") +
-  scale_fill_got(discrete = TRUE, option = "Daenerys", direction = - 1) +
+  scale_fill_got_d(option = "Daenerys", direction = - 1) +
     ggtitle("Daenerys Stormborn") +
     theme_minimal()
 

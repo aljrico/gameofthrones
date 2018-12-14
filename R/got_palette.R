@@ -176,12 +176,20 @@ scale_colour_got <- scale_color_got
 #' @rdname scale_got
 #' @aliases scale_color_got
 #' @export
-scale_colour_got_d <- scale_colour_got(discrete = TRUE)
+scale_colour_got_d <- function(..., alpha = 1, begin = 0, end = 1,
+																	 direction = 1, option, aesthetics = "colour") {
+	ggplot2::discrete_scale(
+		aesthetics,
+		"got_d",
+		got_pal(alpha, begin, end, direction, option),
+		...
+	)
+}
 
 #' @rdname scale_got
 #' @aliases scale_color_got
 #' @export
-scale_color_got_d <- scale_color_got(discrete = TRUE)
+scale_color_got_d <- scale_colour_got_d
 
 
 #' @rdname got
@@ -270,4 +278,12 @@ scale_fill_got <- function(..., alpha = 1, begin = 0, end = 1, direction = 1,
 #' @rdname scale_got
 #' @aliases scale_fill_got
 #' @export
-scale_fill_got_d <- scale_fill_got(discrete = TRUE)
+scale_fill_got_d <- function(..., alpha = 1, begin = 0, end = 1,
+																 direction = 1, option, aesthetics = "fill") {
+	discrete_scale(
+		aesthetics,
+		"got_d",
+		got_pal(alpha, begin, end, direction, option),
+		...
+	)
+}

@@ -193,12 +193,12 @@ grid.arrange(p1,p2, ncol = 2)
 ```{r}
 gg1 <- ggplot(diamonds, aes(carat, fill = cut)) +
   geom_density(position = "stack") +
-	scale_fill_got(discrete = TRUE, option = "Stark2")
+	scale_fill_got_d(option = "Stark2")
 
 gg2 <- ggplot(mpg, aes(class)) +
 	geom_bar(aes(fill = drv), position = position_stack(reverse = TRUE), colour = "black") +
  coord_flip() +
-	scale_fill_got(discrete = TRUE, option = "Daenerys") +
+	scale_fill_got_d(option = "Daenerys") +
  theme(legend.position = "top") +
 	ylab("") +
 	xlab("Class")
