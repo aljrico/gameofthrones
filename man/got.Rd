@@ -52,12 +52,12 @@ This function creates a vector of \code{n} equally spaced colors along the
 \details{
 \if{html}{Here are the color scales:
 
-  \out{<div style="text-align: center">}\figure{hogwarts-scales.png}{houses: style="width:750px;max-width:90\%;"}\out{</div>}
+  \out{<div style="text-align: center">}\figure{got-scales.png}{houses: style="width:750px;max-width:90\%;"}\out{</div>}
 
   }
 \if{latex}{Here are the color scales:
 
-  \out{\begin{center}}\figure{hogwarts-scales.png}\out{\end{center}}
+  \out{\begin{center}}\figure{got-scales.png}\out{\end{center}}
   }
 
 
@@ -68,13 +68,15 @@ devices: see \code{\link[grDevices]{rgb}}.
 library(ggplot2)
 library(hexbin)
 
-dat <- data.frame(x = rnorm(10000), y = rnorm(10000))
+dat <- data.frame(x = rnorm(1e4), y = rnorm(1e4))
 
 ggplot(dat, aes(x = x, y = y)) +
   geom_hex() + coord_fixed() +
-  scale_fill_gradientn(colours = got(256, option = "targaryen")) +
+  scale_fill_gradientn(colours = got(128, option = "targaryen")) +
   theme_minimal()
 
+pal <- got(256, option = "Wildfire")
+image(volcano, col = pal)
 
 }
 \author{

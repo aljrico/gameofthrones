@@ -42,6 +42,10 @@ are as output by \code{got_pal}. If -1, the order of colors is reversed.}
 \item{discrete}{generate a discrete palette? (default: \code{FALSE} - generate continuous palette)}
 
 \item{option}{A character string indicating the colourmap to use.}
+
+\item{aesthetics}{Character string or vector of character strings listing the name(s) of the aesthetic(s) that this scale works with.
+This can be useful, for example, to apply colour settings to the `colour` and `fill` aesthetics at the same time, via `aesthetics = c("colour", "fill")`.
+Parameter inherited from 'ggplot2'.}
 }
 \description{
 Uses the Game of Thrones color scale.
@@ -55,32 +59,17 @@ number of colors.
 \examples{
 library(ggplot2)
 
-# ripped from the pages of ggplot2
-ggplot(iris, aes(Petal.Width, colour = Species, fill = Species)) +
-geom_density(alpha = 0.8) +
-scale_fill_got(discrete = TRUE, option = "Tully") +
-scale_colour_got(discrete = TRUE, option = "Tully") +
-theme_minimal()
+ggplot(mtcars, aes(factor(cyl), fill=factor(vs))) +
+geom_bar() +
+scale_fill_got(discrete = TRUE, option = "Daenerys")
 
-ggplot(iris, aes(Sepal.Length, Petal.Length)) +
-  geom_point(size=4, aes(colour = factor(Species))) +
-    scale_color_got(discrete=TRUE, option = "Tyrell") +
-    theme_bw()
+ggplot(mtcars, aes(factor(gear), fill=factor(carb))) +
+geom_bar() +
+scale_fill_got(discrete = TRUE, option = "Tully")
 
-
-# from the main got example
-dat <- data.frame(x = rnorm(1e4), y = rnorm(1e4))
-
-ggplot(dat, aes(x = x, y = y)) +
-  geom_hex() +
-  coord_fixed() +
-  scale_fill_got(option = "wildfire") +
-  theme_bw()
-
-ggplot(diamonds, aes(carat, stat(count), fill = cut)) +
-geom_density(position = "fill") +
-scale_fill_got(discrete = TRUE, option = "Lannister")
-
+ggplot(mtcars, aes(x = mpg, y = disp, colour = hp)) +
+geom_point(size = 2) +
+scale_colour_got(option = "Lannister")
 
 
 }

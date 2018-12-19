@@ -1,6 +1,6 @@
 Package: gameofthrones
 Type: Package
-Title: Palettes inspired in the TV show "Game of Thrones"
+Title: Palettes Inspired in the TV Show "Game of Thrones"
 Version: 1.0.0
 Authors@R: person("Alejandro", "Jimenez Rico", email = "aljrico@gmail.com", role = c("aut", "cre"))
 Maintainer: Alejandro Jimenez Rico <aljrico@gmail.com>
