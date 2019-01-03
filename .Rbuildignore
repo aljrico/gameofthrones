@@ -7,7 +7,7 @@ NAMESPACE
 NAMESPACE.MD
 NEWS.MD
 readme.md
-readme_files/
+readme_raw_files/
 readme*
 vignette/
 docs/
