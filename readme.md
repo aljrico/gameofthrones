@@ -1,6 +1,10 @@
 
 <center><img src="https://raw.githubusercontent.com/aljrico/gameofthrones/master/readme_raw_files/figure-markdown_github/houses.png" ></center>
 
+[![cran version](http://www.r-pkg.org/badges/version/gameofthrones)](https://cran.r-project.org/package=gameofthrones)
+[![rstudio mirror per-month downloads](http://cranlogs.r-pkg.org/badges/gameofthrones)](https://github.com/metacran/cranlogs.app)
+[![rstudio mirror total downloads](http://cranlogs.r-pkg.org/badges/grand-total/gameofthrones?color=yellowgreen)](https://github.com/metacran/cranlogs.app)
+
 
 This package provides a round of palettes inspired by the *Game of
 Thrones* TV show.
