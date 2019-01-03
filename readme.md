@@ -32,6 +32,12 @@ version of the package installed:
 devtools::install_github("aljrico/gameofthrones")
 ```
 
+Or just use the more stable version on the CRAN:
+
+```r
+install.packages("gameofthrones")
+```
+
 And you can now use it:
 
 ``` r
