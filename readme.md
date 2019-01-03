@@ -45,6 +45,9 @@ library(gameofthrones)
 ```
 
 <center><img src="https://raw.githubusercontent.com/aljrico/gameofthrones/master/readme_raw_files/figure-markdown_github/scales_1-6.png" ></center>
+<center><img src="https://raw.githubusercontent.com/aljrico/gameofthrones/master/readme_raw_files/figure-markdown_github/scales_7-12.png" ></center>
+<center><img src="https://raw.githubusercontent.com/aljrico/gameofthrones/master/readme_raw_files/figure-markdown_github/scales_13-16.png" ></center>
+
 
 
 Usage
