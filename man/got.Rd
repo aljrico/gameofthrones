@@ -8,16 +8,16 @@
 \title{Game of Thrones Colour Map.}
 \usage{
 gotMap(n = 256, alpha = 1, begin = 0, end = 1, direction = 1,
-  option = "targaryen")
+  option = "Daenerys")
 
 got(n, alpha = 1, begin = 0, end = 1, direction = 1,
-  option = "targaryen")
+  option = "Daenerys")
 
 got_pal(alpha = 1, begin = 0, end = 1, direction = 1,
-  option = "targaryen")
+  option = "Daenerys")
 
 gameofthrones(n, alpha = 1, begin = 0, end = 1, direction = 1,
-  option = "targaryen")
+  option = "Daenerys")
 }
 \arguments{
 \item{n}{The number of colors (\eqn{\ge 1}) to be in the palette.}

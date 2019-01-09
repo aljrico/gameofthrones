@@ -79,7 +79,7 @@
 #' channels of \code{n} equally spaced colors along the 'Game of Thrones' colour map.
 #' \code{n = 256} by default.
 #'
-gotMap <- function(n = 256, alpha = 1, begin = 0, end = 1, direction = 1, option = "targaryen") {
+gotMap <- function(n = 256, alpha = 1, begin = 0, end = 1, direction = 1, option = "Daenerys") {
 
 	option <- tolower(option)
 
@@ -110,7 +110,7 @@ gotMap <- function(n = 256, alpha = 1, begin = 0, end = 1, direction = 1, option
 #' @rdname got
 #' @export
 #'
-got <- function(n, alpha = 1, begin = 0, end = 1, direction = 1, option = "targaryen") {
+got <- function(n, alpha = 1, begin = 0, end = 1, direction = 1, option = "Daenerys") {
 
 	option <- tolower(option)
 
@@ -143,7 +143,7 @@ got <- function(n, alpha = 1, begin = 0, end = 1, direction = 1, option = "targa
 #' @rdname got
 #'
 #' @export
-got_pal <- function(alpha = 1, begin = 0, end = 1, direction = 1, option = "targaryen") {
+got_pal <- function(alpha = 1, begin = 0, end = 1, direction = 1, option = "Daenerys") {
 
 	option <- tolower(option)
 
@@ -159,7 +159,7 @@ got_pal <- function(alpha = 1, begin = 0, end = 1, direction = 1, option = "targ
 #'
 #' @export
 scale_color_got <- function(..., alpha = 1, begin = 0, end = 1, direction = 1,
-																discrete = FALSE, option = "targaryen") {
+																discrete = FALSE, option = "Daenerys") {
 
 	option <- tolower(option)
 
@@ -179,7 +179,7 @@ scale_colour_got <- scale_color_got
 #' @aliases scale_color_got
 #' @export
 scale_colour_got_d <- function(..., alpha = 1, begin = 0, end = 1,
-																	 direction = 1, option, aesthetics = "colour") {
+																	 direction = 1, option = "Daenerys", aesthetics = "colour") {
 	ggplot2::discrete_scale(
 		aesthetics,
 		"got_d",
@@ -256,7 +256,7 @@ gameofthrones <- got
 #'
 #' @export
 scale_fill_got <- function(..., alpha = 1, begin = 0, end = 1, direction = 1,
-															 discrete = FALSE, option = "targaryen") {
+															 discrete = FALSE, option = "Daenerys") {
 
 	option <- tolower(option)
 
@@ -271,7 +271,7 @@ scale_fill_got <- function(..., alpha = 1, begin = 0, end = 1, direction = 1,
 #' @aliases scale_fill_got
 #' @export
 scale_fill_got_d <- function(..., alpha = 1, begin = 0, end = 1,
-																 direction = 1, option, aesthetics = "fill") {
+																 direction = 1, option = "Daenerys", aesthetics = "fill") {
 	discrete_scale(
 		aesthetics,
 		"got_d",
