@@ -163,3 +163,13 @@ grid.arrange(gg1,gg2)
 
 <center><img src="https://raw.githubusercontent.com/aljrico/gameofthrones/master/readme_raw_files/figure-markdown_github/unnamed-chunk-10-1.png" ></center>
 
+
+# Palettes
+
+```r
+option = "Arya"
+```
+<center><img src="https://raw.githubusercontent.com/aljrico/gameofthrones/master/readme_raw_files/palettes/arya.png" width = "75%""; height="75%"></center>
+
+---
+
