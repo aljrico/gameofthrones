@@ -25,6 +25,7 @@ wildfire <- c("#000000", "#002807", "#006300", "#009C00", "#00C800", "#6EFF6E", 
 arya <- c("#232D37", "#37414B", "#889999", "#AAB7AF", "#5D7850")
 
 options <- list(baratheon = baratheon,
+								baratheon2 = baratheon2,
 							 greyjoy = greyjoy,
 							 jon_snow = jon_snow,
 							 lannister = lannister,
