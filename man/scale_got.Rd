@@ -9,23 +9,65 @@
 \alias{scale_fill_got_d}
 \title{Game of Thrones colour scales}
 \usage{
-scale_color_got(..., alpha = 1, begin = 0, end = 1, direction = 1,
-  discrete = FALSE, option = "Daenerys")
+scale_color_got(
+  ...,
+  alpha = 1,
+  begin = 0,
+  end = 1,
+  direction = 1,
+  discrete = FALSE,
+  option = "Daenerys"
+)
 
-scale_colour_got(..., alpha = 1, begin = 0, end = 1, direction = 1,
-  discrete = FALSE, option = "Daenerys")
+scale_colour_got(
+  ...,
+  alpha = 1,
+  begin = 0,
+  end = 1,
+  direction = 1,
+  discrete = FALSE,
+  option = "Daenerys"
+)
 
-scale_colour_got_d(..., alpha = 1, begin = 0, end = 1,
-  direction = 1, option = "Daenerys", aesthetics = "colour")
+scale_colour_got_d(
+  ...,
+  alpha = 1,
+  begin = 0,
+  end = 1,
+  direction = 1,
+  option = "Daenerys",
+  aesthetics = "colour"
+)
 
-scale_color_got_d(..., alpha = 1, begin = 0, end = 1,
-  direction = 1, option = "Daenerys", aesthetics = "colour")
+scale_color_got_d(
+  ...,
+  alpha = 1,
+  begin = 0,
+  end = 1,
+  direction = 1,
+  option = "Daenerys",
+  aesthetics = "colour"
+)
 
-scale_fill_got(..., alpha = 1, begin = 0, end = 1, direction = 1,
-  discrete = FALSE, option = "Daenerys")
+scale_fill_got(
+  ...,
+  alpha = 1,
+  begin = 0,
+  end = 1,
+  direction = 1,
+  discrete = FALSE,
+  option = "Daenerys"
+)
 
-scale_fill_got_d(..., alpha = 1, begin = 0, end = 1, direction = 1,
-  option = "Daenerys", aesthetics = "fill")
+scale_fill_got_d(
+  ...,
+  alpha = 1,
+  begin = 0,
+  end = 1,
+  direction = 1,
+  option = "Daenerys",
+  aesthetics = "fill"
+)
 }
 \arguments{
 \item{...}{parameters to \code{discrete_scale} or \code{scale_fill_gradientn}}

@@ -3,6 +3,7 @@
 export(gameofthrones)
 export(got)
 export(got_pal)
+export(got_palettes)
 export(scale_color_got)
 export(scale_color_got_d)
 export(scale_colour_got)

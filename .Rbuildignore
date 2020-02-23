@@ -11,3 +11,4 @@ readme_raw_files/
 readme*
 vignette/
 docs/
+^data-raw$
