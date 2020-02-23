@@ -1,5 +1,8 @@
 
-<center><img src="https://raw.githubusercontent.com/aljrico/gameofthrones/master/readme_raw_files/figure-markdown_github/houses.png" ></center>
+
+# gameofthrones <img src="man/figures/logo.png" align="right" width="120" />
+
+
 
 [![cran version](http://www.r-pkg.org/badges/version/gameofthrones)](https://cran.r-project.org/package=gameofthrones)
 [![rstudio mirror per-month downloads](http://cranlogs.r-pkg.org/badges/gameofthrones)](https://github.com/metacran/cranlogs.app)
