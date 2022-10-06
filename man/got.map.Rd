@@ -4,13 +4,15 @@
 \name{got.map}
 \alias{got.map}
 \title{'Game of Thrones' colour map}
-\format{A data frame containing all the colours used in the palette:
+\format{
+A data frame containing all the colours used in the palette:
 \itemize{
-  \item V1: Red value
-  \item V2: Green value
-  \item V3: Blue value
-  \item option: Refers to the houses of Westeros, or other colourmaps. It is intended to be a general option for choosing the specific colour palette.
-}}
+\item V1: Red value
+\item V2: Green value
+\item V3: Blue value
+\item option: Refers to the houses of Westeros, or other colourmaps. It is intended to be a general option for choosing the specific colour palette.
+}
+}
 \usage{
 got.map
 }

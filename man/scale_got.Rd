@@ -74,9 +74,9 @@ scale_fill_got_d(
 
 \item{alpha}{pass through parameter to \code{got}}
 
-\item{begin}{The (corrected) hue in [0,1] at which the got colormap begins.}
+\item{begin}{The (corrected) hue in \link{0,1} at which the got colormap begins.}
 
-\item{end}{The (corrected) hue in [0,1] at which the got colormap ends.}
+\item{end}{The (corrected) hue in \link{0,1} at which the got colormap ends.}
 
 \item{direction}{Sets the order of colors in the scale. If 1, the default, colors
 are as output by \code{got_pal}. If -1, the order of colors is reversed.}
@@ -86,7 +86,7 @@ are as output by \code{got_pal}. If -1, the order of colors is reversed.}
 \item{option}{A character string indicating the colourmap to use.}
 
 \item{aesthetics}{Character string or vector of character strings listing the name(s) of the aesthetic(s) that this scale works with.
-This can be useful, for example, to apply colour settings to the `colour` and `fill` aesthetics at the same time, via `aesthetics = c("colour", "fill")`.
+This can be useful, for example, to apply colour settings to the \code{colour} and \code{fill} aesthetics at the same time, via \code{aesthetics = c("colour", "fill")}.
 Parameter inherited from 'ggplot2'.}
 }
 \description{

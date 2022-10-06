@@ -4,7 +4,9 @@
 \name{got_palettes}
 \alias{got_palettes}
 \title{Complete list of palettes}
-\format{An object of class \code{list} of length 18.}
+\format{
+An object of class \code{list} of length 18.
+}
 \usage{
 got_palettes
 }
