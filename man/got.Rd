@@ -32,12 +32,12 @@ gameofthrones(
 \arguments{
 \item{n}{The number of colors (\eqn{\ge 1}) to be in the palette.}
 
-\item{alpha}{The alpha transparency, a number in [0,1], see argument alpha in
+\item{alpha}{The alpha transparency, a number in \verb{[0,1]}, see argument alpha in
 \code{\link[grDevices]{hsv}}.}
 
-\item{begin}{The (corrected) hue in [0,1] at which the got colormap begins.}
+\item{begin}{The (corrected) hue in \verb{[0,1]} at which the got colormap begins.}
 
-\item{end}{The (corrected) hue in [0,1] at which the got colormap ends.}
+\item{end}{The (corrected) hue in \verb{[0,1]} at which the got colormap ends.}
 
 \item{direction}{Sets the order of colors in the scale. If 1, the default, colors
 are ordered from darkest to lightest. If -1, the order of colors is reversed.}
@@ -60,16 +60,9 @@ This function creates a vector of \code{n} equally spaced colors along the
 'got colour map'.
 }
 \details{
-\if{html}{Here are the color scales:
+Here are the color scales:
 
-  \out{<div style="text-align: center">}\figure{got-scales.png}{houses: style="width:750px;max-width:90\%;"}\out{</div>}
-
-  }
-\if{latex}{Here are the color scales:
-
-  \out{\begin{center}}\figure{got-scales.png}\out{\end{center}}
-  }
-
+\figure{got-scales.png}
 
 Semi-transparent colors (\eqn{0 < alpha < 1}) are supported only on some
 devices: see \code{\link[grDevices]{rgb}}.
