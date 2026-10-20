@@ -2,7 +2,6 @@
 #'
 #' A dataset containing the colour palettes from the TV show 'Game of Thrones'.
 #'
-#'
 #'@format A data frame containing all the colours used in the palette:
 #'\itemize{
 #'   \item V1: Red value
@@ -12,8 +11,18 @@
 #'}
 "got.map"
 
+# One colour ramp per option, built on first use. Filtering the 222k-row map and fitting the
+# spline is the slow part of got(), and ggplot calls it on every scale build.
+ramps <- new.env(parent = emptyenv())
 
-
+got_ramp <- function(option) {
+	if (is.null(ramps[[option]])) {
+		map <- got.map[got.map$option == option, ]
+		map_cols <- grDevices::rgb(map$V1, map$V2, map$V3, maxColorValue = 255)
+		ramps[[option]] <- grDevices::colorRamp(map_cols, space = "Lab", interpolate = "spline")
+	}
+	ramps[[option]]
+}
 
 #' Game of Thrones Colour Map.
 #'
@@ -64,49 +73,9 @@
 #' pal <- got(256, option = "Wildfire")
 #' image(volcano, col = pal)
 #'
-
-#' @rdname got
-#'
-#' @return  \code{gotMap} returns a \code{n} lines data frame containing the
-#' red (\code{R}), green (\code{G}), blue (\code{B}) and alpha (\code{alpha})
-#' channels of \code{n} equally spaced colors along the 'Game of Thrones' colour map.
-#' \code{n = 256} by default.
-#'
-gotMap <- function(n = 256, alpha = 1, begin = 0, end = 1, direction = 1, option = "Daenerys") {
-
-	option <- tolower(option)
-
-	if (begin < 0 | begin > 1 | end < 0 | end > 1) {
-		stop("begin and end must be in [0,1]")
-	}
-
-	if (abs(direction) != 1) {
-		stop("direction must be 1 or -1")
-	}
-
-	if (direction == -1) {
-		tmp <- begin
-		begin <- end
-		end <- tmp
-	}
-
-	colnames(got.map) <- c("R", "G", "B", "option")
-
-	map <- got.map[got.map$option == option, ]
-
-	map_cols <- grDevices::rgb(map$R, map$G, map$B, maxColorValue = 255)
-	fn_cols <- grDevices::colorRamp(map_cols, space = "Lab", interpolate = "spline")
-	cols <- fn_cols(seq(begin, end, length.out = n)) / 255
-	data.frame(R = cols[, 1], G = cols[, 2], B = cols[, 3], alpha = alpha)
-}
-
-#' @rdname got
 #' @export
-#'
 got <- function(n, alpha = 1, begin = 0, end = 1, direction = 1, option = "Daenerys") {
 
-	option <- tolower(option)
-
 	if (begin < 0 | begin > 1 | end < 0 | end > 1) {
 		stop("begin and end must be in [0,1]")
 	}
@@ -115,80 +84,22 @@ got <- function(n, alpha = 1, begin = 0, end = 1, direction = 1, option = "Daene
 		stop("direction must be 1 or -1")
 	}
 
-	if (direction == -1) {
-		tmp <- begin
-		begin <- end
-		end <- tmp
-	}
+	stops <- seq(begin, end, length.out = n)
+	if (direction == -1) stops <- rev(stops)
 
-	colnames(got.map) <- c("R", "G", "B", "option")
-
-	map <- got.map[got.map$option == option, ]
-
-	map_cols <- grDevices::rgb(map$R, map$G, map$B, maxColorValue = 255)
-	fn_cols <- grDevices::colorRamp(map_cols, space = "Lab", interpolate = "spline")
-	cols <- fn_cols(seq(begin, end, length.out = n)) / 255
+	cols <- got_ramp(tolower(option))(stops) / 255
 	grDevices::rgb(cols[, 1], cols[, 2], cols[, 3], alpha = alpha)
 }
 
-
-
 #' @rdname got
-#'
 #' @export
 got_pal <- function(alpha = 1, begin = 0, end = 1, direction = 1, option = "Daenerys") {
-
-	option <- tolower(option)
-
 	function(n) {
 		got(n, alpha, begin, end, direction, option)
 	}
 }
 
-
-#' @rdname scale_got
-#'
-#' @importFrom ggplot2 scale_fill_gradientn scale_color_gradientn discrete_scale
-#'
-#' @export
-scale_color_got <- function(..., alpha = 1, begin = 0, end = 1, direction = 1,
-																discrete = FALSE, option = "Daenerys") {
-
-	option <- tolower(option)
-
-	if (discrete) {
-		discrete_scale("colour", "got", got_pal(alpha, begin, end, direction, option), ...)
-	} else {
-		scale_color_gradientn(colours = got(256, alpha, begin, end, direction, option), ...)
-	}
-}
-
-#' @rdname scale_got
-#' @aliases scale_color_got
-#' @export
-scale_colour_got <- scale_color_got
-
-#' @rdname scale_got
-#' @aliases scale_color_got
-#' @export
-scale_colour_got_d <- function(..., alpha = 1, begin = 0, end = 1,
-																	 direction = 1, option = "Daenerys", aesthetics = "colour") {
-	ggplot2::discrete_scale(
-		aesthetics,
-		"got_d",
-		got_pal(alpha, begin, end, direction, option),
-		...
-	)
-}
-
-#' @rdname scale_got
-#' @aliases scale_color_got
-#' @export
-scale_color_got_d <- scale_colour_got_d
-
-
 #' @rdname got
-#' @aliases got
 #' @export
 gameofthrones <- got
 
@@ -201,14 +112,13 @@ gameofthrones <- got
 #' Otherwise the function will return a \code{discrete_scale} with the plot-computed
 #' number of colors.
 #'
-#'
 #' @param ... parameters to \code{discrete_scale} or \code{scale_fill_gradientn}
 #'
 #' @param alpha pass through parameter to \code{got}
 #'
-#' @param begin The (corrected) hue in [0,1] at which the got colormap begins.
+#' @param begin The (corrected) hue in `[0,1]` at which the got colormap begins.
 #'
-#' @param end The (corrected) hue in [0,1] at which the got colormap ends.
+#' @param end The (corrected) hue in `[0,1]` at which the got colormap ends.
 #'
 #' @param direction Sets the order of colors in the scale. If 1, the default, colors
 #' are as output by \code{got_pal}. If -1, the order of colors is reversed.
@@ -221,15 +131,7 @@ gameofthrones <- got
 #' This can be useful, for example, to apply colour settings to the `colour` and `fill` aesthetics at the same time, via `aesthetics = c("colour", "fill")`.
 #' Parameter inherited from 'ggplot2'.
 #'
-#'
-#'
-#' @rdname scale_got
-#'
 #' @author Alejandro Jiménez Rico \email{aljrico@@gmail.com}
-#'
-#' @importFrom ggplot2 scale_fill_gradientn scale_color_gradientn discrete_scale
-#'
-#' @importFrom gridExtra grid.arrange
 #'
 #' @examples
 #' library(ggplot2)
@@ -246,29 +148,50 @@ gameofthrones <- got
 #' geom_point(size = 2) +
 #' scale_colour_got(option = "Lannister")
 #'
-#'
+#' @name scale_got
+NULL
+
+#' @rdname scale_got
 #' @export
-scale_fill_got <- function(..., alpha = 1, begin = 0, end = 1, direction = 1,
-															 discrete = FALSE, option = "Daenerys") {
-
-	option <- tolower(option)
-
+scale_colour_got <- function(..., alpha = 1, begin = 0, end = 1, direction = 1,
+														 discrete = FALSE, option = "Daenerys") {
 	if (discrete) {
-		discrete_scale("fill", "got", got_pal(alpha, begin, end, direction, option), ...)
+		scale_colour_got_d(..., alpha = alpha, begin = begin, end = end, direction = direction, option = option)
 	} else {
-		scale_fill_gradientn(colours = got(256, alpha, begin, end, direction, option), ...)
+		ggplot2::scale_colour_gradientn(colours = got(256, alpha, begin, end, direction, option), ...)
 	}
 }
 
 #' @rdname scale_got
-#' @aliases scale_fill_got
+#' @export
+scale_color_got <- scale_colour_got
+
+#' @rdname scale_got
+#' @export
+scale_fill_got <- function(..., alpha = 1, begin = 0, end = 1, direction = 1,
+													 discrete = FALSE, option = "Daenerys") {
+	if (discrete) {
+		scale_fill_got_d(..., alpha = alpha, begin = begin, end = end, direction = direction, option = option)
+	} else {
+		ggplot2::scale_fill_gradientn(colours = got(256, alpha, begin, end, direction, option), ...)
+	}
+}
+
+#' @rdname scale_got
+#' @export
+scale_colour_got_d <- function(..., alpha = 1, begin = 0, end = 1,
+															 direction = 1, option = "Daenerys", aesthetics = "colour") {
+	ggplot2::discrete_scale(aesthetics, palette = got_pal(alpha, begin, end, direction, option), ...)
+}
+
+#' @rdname scale_got
+#' @export
+scale_color_got_d <- scale_colour_got_d
+
+#' @rdname scale_got
 #' @export
 scale_fill_got_d <- function(..., alpha = 1, begin = 0, end = 1,
-																 direction = 1, option = "Daenerys", aesthetics = "fill") {
-	discrete_scale(
-		aesthetics,
-		"got_d",
-		got_pal(alpha, begin, end, direction, option),
-		...
-	)
+														 direction = 1, option = "Daenerys", aesthetics = "fill") {
+	scale_colour_got_d(..., alpha = alpha, begin = begin, end = end, direction = direction,
+										 option = option, aesthetics = aesthetics)
 }
