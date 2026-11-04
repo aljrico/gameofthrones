@@ -4,7 +4,7 @@ Title: Palettes Inspired in the TV Show "Game of Thrones"
 Version: 1.0.3
 Authors@R: person("Alejandro", "Jimenez Rico", email = "aljrico@gmail.com", role = c("aut", "cre"))
 Maintainer: Alejandro Jimenez Rico <aljrico@gmail.com>
-Description: Implementation of the characteristic palettes from the TV show 'Game of Thrones'.
+Description: Implementation of the characteristic palettes from the TV show "Game of Thrones".
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: TRUE

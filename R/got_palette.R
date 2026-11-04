@@ -131,6 +131,13 @@ gameofthrones <- got
 #' This can be useful, for example, to apply colour settings to the `colour` and `fill` aesthetics at the same time, via `aesthetics = c("colour", "fill")`.
 #' Parameter inherited from 'ggplot2'.
 #'
+#' @return A 'ggplot2' scale object (a `ggproto` object inheriting from `Scale`)
+#' that sets the colours of a plot when added to it with `+`. The `_d` functions,
+#' and the others when `discrete = TRUE`, return a discrete scale (class
+#' `ScaleDiscrete`) that takes one colour from the palette per data level. The
+#' others return a continuous scale (class `ScaleContinuous`) that maps numeric
+#' values onto a gradient of the palette.
+#'
 #' @author Alejandro Jiménez Rico \email{aljrico@@gmail.com}
 #'
 #' @examples

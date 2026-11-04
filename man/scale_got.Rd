@@ -90,6 +90,14 @@ are as output by \code{got_pal}. If -1, the order of colors is reversed.}
 This can be useful, for example, to apply colour settings to the \code{colour} and \code{fill} aesthetics at the same time, via \code{aesthetics = c("colour", "fill")}.
 Parameter inherited from 'ggplot2'.}
 }
+\value{
+A 'ggplot2' scale object (a \code{ggproto} object inheriting from \code{Scale})
+that sets the colours of a plot when added to it with \code{+}. The \verb{_d} functions,
+and the others when \code{discrete = TRUE}, return a discrete scale (class
+\code{ScaleDiscrete}) that takes one colour from the palette per data level. The
+others return a continuous scale (class \code{ScaleContinuous}) that maps numeric
+values onto a gradient of the palette.
+}
 \description{
 Uses the Game of Thrones color scale.
 }
